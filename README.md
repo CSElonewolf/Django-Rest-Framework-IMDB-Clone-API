@@ -1,0 +1,2 @@
+# Django-Rest-Framework-IMDB-Clone-API
+While working on this project I learnt API Basics, Serializers-[Serializers in general, ModelSerializer,HyperlinkedModel Serializers], function based Views, Class Based Views-[APIView,Generic View,Mixins,Concrete View Classes], Viewssets,Routers, Permissions,Authentications,Throttling,Django Filter Backend,Pagination,Automated API Testing, so you can see a ton of stuff, let's go  
