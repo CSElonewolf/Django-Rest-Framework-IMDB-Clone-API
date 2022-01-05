@@ -1,14 +1,93 @@
 # rest_framework internal imports
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
+# import for viewset
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+
+# import for function based view
+# from rest_framework.decorators import api_view
+
+# import for generic view
+from rest_framework import generics
+# from rest_framework import mixins
+
 
 # custom imports
-from watchlist_app.models import WatchList,StreamPlatform
-from watchlist_app.api.serializers import WatchListSerializer,StreamPlatformSerializer
+from watchlist_app.models import Review, WatchList,StreamPlatform
+from watchlist_app.api.serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
 
-# StreamPlatformlist
+
+# concrete view class
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
+# concrete view class
+class ReviewList(generics.ListAPIView):
+	serializer_class = ReviewSerializer
+	def get_queryset(self):
+		pk = self.kwargs['pk']
+		return Review.objects.filter(watchlist = pk)
+
+
+# concrete view class
+class ReviewCreate(generics.CreateAPIView):
+	serializer_class = ReviewSerializer
+
+	def get_queryset(self):
+		return Review.objects.all()
+
+	def perform_create(self,serializer):
+		pk = self.kwargs['pk']
+		watchlist = WatchList.objects.get(pk = pk)
+
+		review_user = self.request.user
+		review_queryset = Review.objects.filter(watchlist = watchlist,review_user=review_user)
+
+		# check if the same user is trying to add another review
+		if review_queryset.exists():
+			raise ValidationError("You have already reviews this movie!")
+
+		serializer.save(watchlist=watchlist,review_user=review_user)
+
+# Viewset
+# class StreamPlatformVS(viewsets.ViewSet):
+# 	def list(self, request):
+# 		queryset = StreamPlatform.objects.all()
+# 		serializer = StreamPlatformSerializer(queryset, many=True)
+# 		return Response(serializer.data)
+
+# 	def retrieve(self, request, pk=None):
+# 		queryset = StreamPlatform.objects.all()
+# 		stream = get_object_or_404(queryset, pk=pk)
+# 		serializer = StreamPlatformSerializer(stream)
+# 		return Response(serializer.data)
+
+# 	def create(self, request):
+# 		serializer = StreamPlatformSerializer(data = request.data)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data)
+# 		else:
+# 			return Response(serializer.errors)
+
+# ModelViewSet
+class StreamPlatformVS(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = StreamPlatformSerializer
+    queryset = StreamPlatform.objects.all()
+
+
+
+
+# APIView class
 class StreamPlatformAV(APIView):
 	def get(self,request):
 		platform = StreamPlatform.objects.all()
