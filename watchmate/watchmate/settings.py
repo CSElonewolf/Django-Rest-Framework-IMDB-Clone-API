@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'watchlist_app',
     'rest_framework',
+    'rest_framework.authtoken',
+    'user_app',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +128,17 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #  'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.authentication.BasicAuthentication'
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+}
 
 # admin credentials
 # username = drfdevkant
