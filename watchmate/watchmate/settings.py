@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'watchlist_app',
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'user_app',
 ]
@@ -136,10 +137,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         #  'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         # 'rest_framework.authentication.BasicAuthentication'
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ]
 }
 
 # admin credentials
 # username = drfdevkant
 # password = drfdevkant
+
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS':True
+}
