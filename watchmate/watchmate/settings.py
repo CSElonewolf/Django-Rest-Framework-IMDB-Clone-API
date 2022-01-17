@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'watchlist_app',
     'rest_framework',
     'rest_framework.authtoken',
-    'user_app',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -129,15 +129,22 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         #  'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         # 'rest_framework.authentication.BasicAuthentication'
         'rest_framework.authentication.TokenAuthentication'
-    ]
+    ],
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '2/day',
+        'user': '10/day',
+        'anon-watch-list':'5/day',
+        'user-watch-list':'10/day',
+    }
 }
 
 # admin credentials
