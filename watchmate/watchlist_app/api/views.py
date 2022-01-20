@@ -26,6 +26,9 @@ from watchlist_app.models import Review, WatchList,StreamPlatform
 from watchlist_app.api.serializers import WatchListSerializer,StreamPlatformSerializer,ReviewSerializer
 from watchlist_app.api.permissions import IsAdminOrReadOnly,IsReviewUserOrReadOnly
 from watchlist_app.api.throttling import CustomAnonWatchListThrottle,CustomUserWatchListThrottle
+from watchlist_app.api.pagination import WatchListPagination,WatchListLOPagination,WatchListCPagination
+
+
 
 
 class UserReview(generics.ListAPIView):
@@ -173,16 +176,18 @@ class WatchListGV(generics.ListAPIView):
 	serializer_class = WatchListSerializer
 
 	# search /?search= and ordering check the documentation
-	filter_backends = [filters.SearchFilter,filters.OrderingFilter]
+	filter_backends = [filters.SearchFilter]
 	search_fields  = ['title', 'platform__name']
-	ordering_fields = ['created']
+	# ordering_fields = ['created']
+
+	pagination_class = WatchListLOPagination
 
 
 # WatchList APiview Class
 class WatchListAV(APIView):
 	permission_classes = [IsAdminOrReadOnly]
 
-	# how to implement a custom throttling 
+	# how to implement a custom throttling
 	throttle_classes = [CustomUserWatchListThrottle,CustomAnonWatchListThrottle]
 	# scope='anon-watch-list'
 

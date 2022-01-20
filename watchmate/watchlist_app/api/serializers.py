@@ -15,10 +15,11 @@ class WatchListSerializer(serializers.ModelSerializer):
 	# reviews = ReviewSerializer(many= True,read_only=True)
 
 	# by default the id was displayed now thw name o the streamplatform is displayed.
-	platform = serializers.CharField(source = 'platform.name')
+	platform_name = serializers.CharField(source = 'platform.name',read_only=True)
 	class Meta:
 		model = WatchList
 		fields = "__all__"
+
 
 
 class StreamPlatformSerializer(serializers.ModelSerializer):
