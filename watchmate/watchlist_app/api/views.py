@@ -44,7 +44,7 @@ class UserReview(generics.ListAPIView):
 		username = self.request.query_params.get('username')
 		if username is not None:
 			queryset =Review.objects.filter(review_user__username=username)
-		return queryset
+			return queryset
 
 
 

@@ -11,7 +11,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-	# nested serializers in drf /custom field from Revie Model bcs Watchlist is a ForeignKey
+	# nested serializers in drf /custom field from Reviews Model bcs Watchlist is a ForeignKey
 	# reviews = ReviewSerializer(many= True,read_only=True)
 
 	# by default the id was displayed now thw name o the streamplatform is displayed.
